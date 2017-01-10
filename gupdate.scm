@@ -1,6 +1,6 @@
 (use posix)
 
-(define start-directory "~/.vim/bundle")
+(define start-directory "/Users/rca/.vim/bundle")
 
 (define process-subdirectory
   (lambda (d)
