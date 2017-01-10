@@ -1,4 +1,4 @@
-(use srfi-1 fmt posix)
+(use srfi-1 posix)
 
 (define (update-directory thunk dir)
   (unless (null? dir)
@@ -11,9 +11,9 @@
       
 (define (git-update-dir)
     (when (file-exists? ".git")
-      (fmt #t "In: " (current-directory) nl)  
+      (format #t "In: ~A~%" (current-directory))  
       (system "git pull")
-      (fmt #t nl)))
+      (newline)))
 
 (let ((dirlist (command-line-arguments)))
   (if (null? dirlist)
