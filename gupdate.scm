@@ -17,8 +17,7 @@
 
 (let ((dirlist (command-line-arguments)))
   (if (null? dirlist)
-  (fmt #t "Usage:  gupdate <directory>" nl 
-       "Runs \"git pull\" in the directory and any git repositories in subdirectories." nl)
+  (format #t "Usage:  gupdate <directory>~%Runs \"git pull\" in the directory and any git repositories in subdirectories.~%")
     (update-directory git-update-dir dirlist)))
                   
 
