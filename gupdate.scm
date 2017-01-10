@@ -17,7 +17,7 @@
       (system "git pull")
       (fmt #t nl)))
 
-(define start-directory "/Users/rca/.vim/bundle")
+(define start-directory "~/.vim/bundle")
 (change-directory start-directory)
 (update-directory git-update-dir (directory start-directory))
                   
