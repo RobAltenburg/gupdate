@@ -1,23 +1,32 @@
-(use srfi-1 posix)
+;;;; gupdate
+; 
+; a program to run "git pull" in a series of subdirectories
+;
+;
 
-(define (update-directory thunk dir)
-  (unless (null? dir)
-      (change-directory (car dir))
-      (thunk)
-      (update-directory thunk (append (cdr dir)
-          (map (lambda (x) 
-                 (string-append (current-directory) "/" x)) 
-                    (filter directory? (directory (current-directory))))))))
-      
-(define (git-update-dir)
-    (when (file-exists? ".git")
-      (format #t "In: ~A~%" (current-directory))  
-      (system "git pull")
-      (newline)))
+(import srfi-1
+        shell
+        (chicken process)
+        (chicken process-context)
+        (chicken file)
+        (chicken format)
+        (chicken file posix))
 
-(let ((dirlist (command-line-arguments)))
-  (if (null? dirlist)
-  (format #t "Usage:  gupdate <directory>~%Runs \"git pull\" in the directory and any git repositories in subdirectories.~%")
-    (update-directory git-update-dir dirlist)))
-                  
+(define (process-directory start-dir in-dir levels) 
+  (change-directory in-dir)
+  (printf "in directory ~A~%" in-dir) 
+  (when (file-exists? ".git")
+    (print "Found git")
+    (system "git pull")
+    )
+  (change-directory start-dir))
+
+(define (select-directories #!optional (start-directory (current-directory)) (number-of-levels 1))
+  (print "Running in " start-directory)
+  (print "Levels: " number-of-levels)
+  (let ((sub-directories (filter directory? (directory start-directory))))
+    (map (lambda (dd)
+           (process-directory start-directory dd number-of-levels)) sub-directories)))
+
+(select-directories)
 
